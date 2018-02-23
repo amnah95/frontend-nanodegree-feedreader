@@ -34,6 +34,7 @@ $(function() {
         it('all URLs are defined', function() {
             for(var i = 0; i < allFeeds.length; i++) {
                     expect(allFeeds[i].url).toBeDefined();
+                    expect(allFeeds[i].url).not.toBeNull();
                 }
         });
 
@@ -52,13 +53,16 @@ $(function() {
 
     /* This suite contains test related to the menue. */
     describe('The menu', function () {
+
+        var menu = document.querySelector('.menu-icon-link');
+
         /* This test ensures the menu element is
          * hidden by default. You'll have to analyze the HTML and
          * the CSS to determine how we're performing the
          * hiding/showing of the menu element.
          */
         it('menu element is initially hidden', function() {
-            expect(document.body.className).toContain('menu-hidden');
+            expect($('body').hasClass('menu-hidden')).toEqual(true);
         });
 
         /* This test ensures the menu changes
@@ -68,10 +72,10 @@ $(function() {
          */
 
         it('menu toggles when clicked', function() {
-            document.querySelector('.menu-icon-link').click();
+            menu.click();
             expect(document.body.className).not.toContain('menu-hidden');
 
-            document.querySelector('.menu-icon-link').click();
+            menu.click();
             expect(document.body.className).toContain('menu-hidden');
         });
 
@@ -94,7 +98,7 @@ $(function() {
          * a single .entry element within the .feed container.
          */
         it('there is at least entry', function (done) {
-            expect(document.querySelector(".entry")).toBeDefined();
+            expect(document.querySelector(".feed .entry")).toBeDefined();
             done();
         });
     });
@@ -105,11 +109,15 @@ $(function() {
         /* loadFeed() is asynchronous so this following tests will require
          * the use beforeEach and asynchronous done() function.
          */
-        var originalContent = document.querySelector(".feed").innerHTML; 
+        
 
         beforeEach(function(done) {
             loadFeed(0, function() {
+                var originalContent = document.querySelector(".feed").innerHTML; 
+
+                loadFeed(1, function() {
                 done();
+                });
             });
         });
 
