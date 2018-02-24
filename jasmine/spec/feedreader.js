@@ -54,7 +54,8 @@ $(function() {
     /* This suite contains test related to the menue. */
     describe('The menu', function () {
 
-        var menu = document.querySelector('.menu-icon-link');
+    	var body = $('body'),
+        	menu = document.querySelector('.menu-icon-link');
 
         /* This test ensures the menu element is
          * hidden by default. You'll have to analyze the HTML and
@@ -62,7 +63,7 @@ $(function() {
          * hiding/showing of the menu element.
          */
         it('menu element is initially hidden', function() {
-            expect($('body').hasClass('menu-hidden')).toEqual(true);
+            expect(body.hasClass('menu-hidden')).toEqual(true);
         });
 
         /* This test ensures the menu changes
@@ -73,10 +74,10 @@ $(function() {
 
         it('menu toggles when clicked', function() {
             menu.click();
-            expect(document.body.className).not.toContain('menu-hidden');
-
+            expect(body.hasClass('menu-hidden')).toEqual(false);
+            
             menu.click();
-            expect(document.body.className).toContain('menu-hidden');
+            expect(body.hasClass('menu-hidden')).toEqual(true);
         });
 
     });
@@ -110,6 +111,7 @@ $(function() {
          * the use beforeEach and asynchronous done() function.
          */
         
+        var originalContent, loadedContent; 
 
         beforeEach(function(done) {
             loadFeed(0, function() {
@@ -125,7 +127,7 @@ $(function() {
          * by the loadFeed function that the content actually changes.
          */
         it('content changes',function(done){
-            var loadedContent = document.querySelector(".feed").innerHTML;
+            loadedContent = document.querySelector(".feed").innerHTML;
             expect(originalContent).not.toBe(loadedContent);
             done();
         });
